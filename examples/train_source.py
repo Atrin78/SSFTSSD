@@ -17,7 +17,7 @@ import torch.nn.functional as F
 from sklearn.metrics import confusion_matrix
 
 sys.path.append('.')
-from dalib.modules.classifier import ImageClassifier
+from dalib.modules.classifier import Classifier
 import dalib.vision.datasets as datasets
 import dalib.vision.models as models
 from tools.utils import AverageMeter, ProgressMeter, accuracy
