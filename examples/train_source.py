@@ -55,7 +55,7 @@ def main(args: argparse.Namespace):
     print("=> using pre-trained model '{}'".format(args.arch))
     backbone = models.__dict__[args.arch](pretrained=True)
     num_classes = trainset.num_classes
-    classifier = ImageClassifier(backbone, num_classes).to(device)
+    classifier = Classifier(backbone, num_classes).to(device)
 
     # define optimizer and lr scheduler
     optimizer = SGD(classifier.get_parameters(), args.lr, momentum=args.momentum, weight_decay=args.wd, nesterov=True)
@@ -72,7 +72,7 @@ def main(args: argparse.Namespace):
     torch.save(classifier.state_dict(), save_name)
 
 
-def train(train_loader: DataLoader, model: ImageClassifier, optimizer: SGD,
+def train(train_loader: DataLoader, model: Classifier, optimizer: SGD,
           lr_sheduler: StepwiseLR, epoch: int, args: argparse.Namespace):
     batch_time = AverageMeter('Time', ':4.2f')
     data_time = AverageMeter('Data', ':3.1f')
@@ -121,7 +121,7 @@ def train(train_loader: DataLoader, model: ImageClassifier, optimizer: SGD,
             progress.display(i)
 
 
-def validate(val_loader: DataLoader, model: ImageClassifier, args: argparse.Namespace) -> float:
+def validate(val_loader: DataLoader, model: Classifier, args: argparse.Namespace) -> float:
     batch_time = AverageMeter('Time', ':6.3f')
     losses = AverageMeter('Loss', ':.4e')
     top1 = AverageMeter('Acc@1', ':6.2f')
@@ -163,7 +163,7 @@ def validate(val_loader: DataLoader, model: ImageClassifier, args: argparse.Name
     return top1.avg
 
 
-def validate_per_class(val_loader: DataLoader, model: ImageClassifier, args: argparse.Namespace) -> float:
+def validate_per_class(val_loader: DataLoader, model: Classifier, args: argparse.Namespace) -> float:
     batch_time = AverageMeter('Time', ':6.3f')
     progress = ProgressMeter(
         len(val_loader),
